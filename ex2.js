@@ -50,18 +50,28 @@ const dailyWeatherObjects = [
   },
 ];
 
+function convertFtoC(tempF) {
+  return (tempF - 32) * (5 / 9);
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function generateWeatherReport(shouldCelsius) {
+  const tempUnit = shouldCelsius ? "C" : "F";
+
   const forecastStrings = [];
 
   for (const dayWeather of dailyWeatherObjects) {
     let temp = dayWeather.temps.F;
-    let tempUnit = "F";
     if (shouldCelsius) {
-      temp = (dayWeather.temps.F - 32) * (5 / 9);
-      tempUnit = "C";
+      temp = convertFtoC(temp);
     }
     forecastStrings.push(
-      `On ${dayWeather.weekday} it will be ${dayWeather.conditions} with a temperature of ${temp} degrees ${tempUnit}.`
+      `On ${capitalize(dayWeather.weekday)} it will be ${
+        dayWeather.conditions
+      } with a temperature of ${temp.toFixed(1)} degrees ${tempUnit}.`
     );
   }
 
@@ -71,29 +81,32 @@ function generateWeatherReport(shouldCelsius) {
   for (const dayWeather of dailyWeatherObjects) {
     let temp = dayWeather.temps.F;
     if (shouldCelsius) {
-      temp = (dayWeather.temps.F - 32) * (5 / 9);
+      temp = convertFtoC(temp);
     }
-    if (dayWeather.temps.F > maxTemp) {
+    if (temp > maxTemp) {
       maxTemp = temp;
       maxDay = dayWeather.weekday;
     }
   }
 
-  let tempUnit = "F";
-  if (shouldCelsius) {
-    tempUnit = "C";
-  }
   forecastStrings.push(
-    `The warmest day will be ${maxDay} with a temperature of ${maxTemp} degrees ${tempUnit}.`
+    `The warmest day will be ${capitalize(
+      maxDay
+    )} with a temperature of ${maxTemp.toFixed(1)} degrees ${tempUnit}.`
   );
 
   let sum = 0;
-  for (let i = 0; i < dailyWeatherObjects.length - 1; i++) {
-    sum += dailyWeatherObjects[i].temp;
+  for (let i = 0; i < dailyWeatherObjects.length; i++) {
+    sum += dailyWeatherObjects[i].temps.F;
   }
-  const averageTemp = sum / 7;
+  let averageTemp = sum / dailyWeatherObjects.length;
+  if (shouldCelsius) {
+    averageTemp = convertFtoC(averageTemp);
+  }
   forecastStrings.push(
-    `The average temperature next week will be ${averageTemp} degrees ${tempUnit}.`
+    `The average temperature next week will be ${averageTemp.toFixed(
+      1
+    )} degrees ${tempUnit}.`
   );
 
   return forecastStrings;
@@ -102,7 +115,7 @@ function generateWeatherReport(shouldCelsius) {
 function renderWeather() {
   const forecastNode = document.getElementById("forecast-output");
 
-  const forecastStrings = generateWeatherReport(false);
+  const forecastStrings = generateWeatherReport(true);
   for (const forecastString of forecastStrings) {
     const node = document.createElement("p");
     node.innerText = forecastString;
