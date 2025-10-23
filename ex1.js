@@ -50,15 +50,21 @@ const dailyWeatherObjects = [
   },
 ];
 
+function convertFtoC(tempF) {
+  return (tempF - 32) * (5 / 9);
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 function generateWeatherReport() {
   const forecastStrings = [];
 
   for (const dayWeather of dailyWeatherObjects) {
-    const tempC = (dayWeather.temps.F - 32) * (5 / 9);
+    const tempC = convertFtoC(dayWeather.temps.F);
     forecastStrings.push(
-      `On ${
-        dayWeather.weekday.charAt(0).toUpperCase() + dayWeather.weekday.slice(1)
-      } it will be ${
+      `On ${capitalize(dayWeather.weekday)} it will be ${
         dayWeather.conditions
       } with a temperature of ${tempC.toFixed(1)} degrees C.`
     );
@@ -74,9 +80,9 @@ function generateWeatherReport() {
     }
   }
 
-  const maxTempString = `The warmest day will be ${
-    maxDay.charAt(0).toUpperCase() + maxDay.slice(1)
-  } with a temperature of ${((maxTemp - 32) * (5 / 9)).toFixed(1)} degrees C.`;
+  const maxTempString = `The warmest day will be ${capitalize(
+    maxDay
+  )} with a temperature of ${convertFtoC(maxTemp).toFixed(1)} degrees C.`;
 
   return forecastStrings.join("\n") + "\n" + maxTempString;
 }
