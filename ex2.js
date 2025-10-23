@@ -114,8 +114,12 @@ function generateWeatherReport(shouldCelsius) {
 
 function renderWeather() {
   const forecastNode = document.getElementById("forecast-output");
+  const unitsNode = document.getElementById("temp-units");
 
-  const forecastStrings = generateWeatherReport(true);
+  const forecastStrings = generateWeatherReport(unitsNode.value === "C");
+
+  clearPreviousWeather();
+
   for (const forecastString of forecastStrings) {
     const node = document.createElement("p");
     node.innerText = forecastString;

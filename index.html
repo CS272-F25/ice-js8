@@ -12,17 +12,27 @@
     />
     <script src="ex2.js"></script>
   </head>
-  <body class="m-1">
+  <body class="container" style>
     <h1>Basic Weather</h1>
-    <p>
-      Welcome to Basic Weather. Just the basics.
-    </p>
-    <button class="btn btn-primary me-2" onclick="renderWeather()">
+    <p>Welcome to Basic Weather. Just the basics.</p>
+    <button
+      class="btn btn-primary mb-2 col-12 col-md-6 col-lg-4 col-xl-3"
+      onclick="renderWeather()"
+    >
       Check weather
     </button>
-    <button class="btn btn-warning me-2" onclick="clearPreviousWeather()">
+    <div
+      class="mb-2 col-12 col-md-6 col-lg-4 col-xl-3"
+    >
+      <label for="temp-units">Temperature Units</label>
+      <select id="temp-units" class="form-select">
+        <option selected>F</option>
+        <option>C</option>
+      </select>
+    </div>
+    <div id="forecast-output"></div>
+    <button class="btn btn-warning col-12 col-md-6 col-lg-4 col-xl-3" onclick="clearPreviousWeather()">
       Clear
     </button>
-    <div id="forecast-output"></div>
   </body>
 </html>
